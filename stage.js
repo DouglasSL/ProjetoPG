@@ -4,8 +4,11 @@ const PATH_COLOR = 'blue';
 const PATH_STROKE = 1;
 const BEZIER_COLOR = 'red';
 const BEZIER_STROKE = 5;
+const T_BEZIER_COLOR = 'pink';
+const T_BEZIER_STROKE = 2;
 
 var evaluations = 500;
+var sb = 20;
 
 var path1 = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
 var path2 = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
@@ -17,10 +20,13 @@ var bezier_curve2 = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
 var bezier_curve3 = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
 var bezier_curve4 = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
 
+var t_bezier_curves = [];
+
 var points1 = [];
 var points2 = [];
 var points3 = [];
 var points4 = [];
+
 
 var whichPoints;
 var countPoints = 0;
@@ -56,7 +62,7 @@ stage.on('click', function(clickEvent) {
         }
 
         countPoints++;
-
+        
         point.on('drag', function(dragEvent){
             this.attr({"x": dragEvent.x, "y": dragEvent.y});
 
@@ -210,6 +216,9 @@ stage.on('click', function(clickEvent) {
                 path4.lineTo(x, y);
             }
             drawBezierCurve4();
+            if(countPoints == 16){
+                draw();
+            }
         }
 
 
@@ -240,7 +249,7 @@ function drawBezierCurve1() {
 
       x = points[0][1];
       y = points[0][2];
-
+      
     bezier_curve1.lineTo(x, y);
   }
 
@@ -340,4 +349,46 @@ function drawBezierCurve4() {
   }
 
   bezier_curve4.lineTo(points[n][1], points[n][2]);
+}
+
+function draw(){
+    var controlPoints = [];
+    var curve = 0;
+    var cucu = 0;
+    for (t = 0; t <= 1; t += 1/sb){
+        console.log(cucu++);
+        var tpoints = [];
+        for (i = 0; i < evaluations; i++){
+            controlPoints[0] = bezier_curve1._segments[i];
+            
+            controlPoints[1] = bezier_curve2._segments[i];
+            
+            controlPoints[2] = bezier_curve3._segments[i];
+            
+            controlPoints[3] = bezier_curve4._segments[i];
+        
+            
+              for(var p = 1; p < 4; p++) {
+                for(var c = 0; c < 4 - p; c++) {
+                    controlPoints[c][1] = (1 - t) * controlPoints[c][1] + t * controlPoints[c + 1][1];
+                    controlPoints[c][2] = (1 - t) * controlPoints[c][2] + t * controlPoints[c + 1][2];
+                }
+              }
+                
+            tpoints.push(controlPoints[0]);
+        }
+        
+        t_bezier_curves[curve] = new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage);
+        t_bezier_curves[curve].moveTo(tpoints[0][1], tpoints[0][2]);
+        
+            for (tp = 1; tp < tpoints.length - 1; tp++){
+                t_bezier_curves[curve].lineTo(tpoints[tp][1], tpoints[tp][2]);
+            }
+            
+        t_bezier_curves[curve].moveTo(tpoints[tpoints.length - 1][1], tpoints[tpoints.length - 1][2]);
+        curve++;
+    }
+    
+    
+    
 }
