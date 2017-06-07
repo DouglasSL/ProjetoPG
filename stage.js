@@ -179,7 +179,7 @@
                   t_bezier_curves[curve].lineTo(tpoints[tp][1], tpoints[tp][2]);
               }
 
-          t_bezier_curves[curve].lineTo(tpoints[tpoints.length - 1][1], tpoints[tpoints.length - 1][2]);
+          t_bezier_curves[curve].moveTo(tpoints[tpoints.length - 1][1], tpoints[tpoints.length - 1][2]);
           curve++;
       }
 
