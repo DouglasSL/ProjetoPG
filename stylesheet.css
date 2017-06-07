@@ -9,7 +9,6 @@ body {
   border: 0;
   width: 100%;
   height: 100%;
-  background-color: #eee;
   background-color: #6d695c;
   background-image:
   repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
@@ -19,18 +18,38 @@ body {
   background-size: 70px 120px;
 }
 
-input {
-  width: 10%;
+label {
+  color: black;
 }
 
 .title {
   text-align: center;
   margin: 2px;
+  font-family: novaBold;
+  color: black;
 }
 
 .params {
-  margin: 15px;
+  margin: 0 auto;
   text-align: center;
+  background-color: grey;
+  border-radius: 25px;
+  width: 60vw;
+  margin-bottom: 15px;
+  margin-top: 4px;
+  padding: 10px;
+}
+
+.text {
+  text-align: center;
+  margin-left: 5px;
+  width: 25%;
+  border: none;
+  border-radius: 25px;
+}
+
+.item {
+  border-bottom: thin solid black;
 }
 
 #stage {
@@ -42,4 +61,9 @@ input {
 
   margin: 0 auto;
   background-color: white;
+}
+
+@font-face {
+  font-family: novaBold;
+  src: url("./NOVABOLD.otf");
 }

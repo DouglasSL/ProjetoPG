@@ -1,56 +1,48 @@
-<HTML>
-  <HEAD>
-    <TITLE>Projeto PG</TITLE>
-    <SCRIPT SRC="bonsai.min.js"></SCRIPT>
-    <LINK REL="stylesheet" HREF="styles.css">
-    <META CHARSET="UTF-8">
-  </HEAD>
-  <BODY>
-    <DIV ID="header">
-      <DIV ID="university" CLASS="header-item bottom">
-        <P>Universidade Federal de Pernambuco</P>
-      </DIV>
-      <DIV ID="title" CLASS="header-item">
-        <P CLASS="text-title">Curva de Bézier</P>
-        <P CLASS="text-title">Uh tralala</P>
-      </DIV>
-      <DIV ID="discipline" CLASS="header-item bottom">
-        <P>Processamento Gráfico</P>
-        <P>Professor Sílvio Melo</P>
-      </DIV>
-    </DIV>
-    <DIV ID="stage">
-      <DIV ID="inner-stage">
-        <LABEL> Número de avaliações: </LABEL>
-        <INPUT ID="eval" type="number" value="500" oninput="sendEval()">
-        <SCRIPT>
-          if(document.getElementById('eval').val) {
-            eval = document.getElementById('eval').val;
-          } else eval = '500';
-          var b = document.getElementById("inner-stage"),
-              x = b.offsetWidth,
-              y = b.offsetHeight - 150;
-          var options = {
-            url: 'stage.js',
-            width: x,
-            height: y
-          }
-          var movie = bonsai.run(document.getElementById('inner-stage'), options);
-          var sendEval = function() {
-            eval = document.getElementById('eval').value;
-            movie.on('message:ready', function() {
-              movie.sendMessage({
-                nodeData: eval
-              });
+<html>
+  <head>
+    <title> Cúbicas de Bézier controladas por cúbicas de Bézier </title>
+    <script src="bonsai.min.js"></script>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <!-- <h1 class="title"> Transformação Interativa de Cúbicas de Bézier Controladas por Cúbicas de Bézier </h1> -->
+
+    <div class="params">
+      <div class="item">
+        <label style="color: black">Número de avaliações:</label>
+        <input class="text" id="eval" type="number" value="500" oninput="sendData()">
+      </div>
+      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Pontos</label>
+      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Curvas</label>
+      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Segmentos</label>
+    </div>
+
+    <div id="stage">
+      <script>
+        if(document.getElementById('eval').val) {
+          eval = document.getElementById('eval').val;
+        } else eval = '500';
+        var b = document.getElementById("stage"),
+            x = b.offsetWidth,
+            y = b.offsetHeight;
+        var options = {
+          url: 'stage.js',
+          width: x,
+          height: y
+        }
+        var movie = bonsai.run(document.getElementById('stage'), options);
+        var sendData = function() {
+          eval = document.getElementById("eval").value,
+          movie.on('message:ready', function() {
+            movie.sendMessage({
+              eval: eval
             });
-          }
-        </SCRIPT>
-      </DIV>
-    </DIV>
-    <DIV ID="config">
-      <DIV ID="algorithms" CLASS="config-group"></DIV>
-      <DIV ID="parameters" CLASS="config-group"></DIV>
-      <DIV ID="design" CLASS="config-group"></DIV>
-    </DIV>
-  </BODY>
-</HTML>
+          });
+        }
+      </script>
+    </div>
+  </body>
+
+</html>
