@@ -1,0 +1,43 @@
+<HTML>
+  <HEAD>
+    <TITLE>Projeto PG</TITLE>
+    <SCRIPT SRC="bonsai.min.js"></SCRIPT>
+    <LINK REL="stylesheet" HREF="styles.css">
+    <META CHARSET="UTF-8">
+  </HEAD>
+  <BODY>
+    <DIV ID="header">
+      <DIV ID="university" CLASS="header-item bottom">
+        <P>Universidade federal de Pernambuco</P>
+      </DIV>
+      <DIV ID="title" CLASS="header-item">
+        <P CLASS="text-title">Curva de Bézier</P>
+        <P CLASS="text-title">Uh tralala</P>
+      </DIV>
+      <DIV ID="discipline" CLASS="header-item bottom">
+        <P>Processamento Gráfico</P>
+        <P>Professor Sílvio Melo</P>
+      </DIV>
+    </DIV>
+    <DIV ID="stage">
+      <DIV ID="inner-stage">
+        <SCRIPT>
+          var b = document.getElementById("inner-stage"),
+              x = b.offsetWidth,
+              y = b.offsetHeight - 150;
+          var options = {
+            url: 'stage.js',
+            width: x,
+            height: y
+          }
+          bonsai.run(document.getElementById('inner-stage'), options);
+        </SCRIPT>
+      </DIV>
+    </DIV>
+    <DIV ID="config">
+      <DIV ID="algorithms" CLASS="config-group"></DIV>
+      <DIV ID="parameters" CLASS="config-group"></DIV>
+      <DIV ID="design" CLASS="config-group"></DIV>
+    </DIV>
+  </BODY>
+</HTML>
