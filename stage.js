@@ -23,12 +23,13 @@ var points3 = [];
 var points4 = [];
 
 var whichPoints;
+var countPoints = 0;
 
 stage.on('click', function(clickEvent) {
 
     target = clickEvent.target;
 
-    if(target.id <= 2 && 'id' in target){
+    if(target.id <= 2 && 'id' in target && countPoints < 16){
         x = clickEvent.x;
         y = clickEvent.y;
 
@@ -43,7 +44,9 @@ stage.on('click', function(clickEvent) {
         }else if(points4.length < 4){
             points4.push(point.id);
         }
-
+        
+        countPoints++;
+        
         point.on('drag', function(dragEvent){
             this.attr({"x": dragEvent.x, "y": dragEvent.y});
 
@@ -92,7 +95,9 @@ stage.on('click', function(clickEvent) {
 
             point_removed = this.id;
             stage.removeChild(this);
-
+            
+            countPoints --;
+            
             if(points1.includes(point_removed)){
                 segments = path1.segments();
                 index = points1.indexOf(point_removed);
