@@ -27,6 +27,10 @@ var countPoints = 0;
 
 stage.on('message', function(data){
   evaluations = parseInt(data.nodeData);
+  drawBezierCurve1();
+  drawBezierCurve2();
+  drawBezierCurve3();
+  drawBezierCurve4();
 });
 
 stage.on('click', function(clickEvent) {
