@@ -5,10 +5,10 @@ O usuário entra via mouse com 4 poligonais de cúbicas de Bézier. O usuário p
 O usuário pode modificar o posicionamento dos pontos, deletar e inserir carreiras de pontos, mas o slide button só será disponibilizado quando o conjunto de pontos de controle for numericamente suficiente para o objetivo do projeto. O usuário poderá suprimir os pontos de controle, a poligonal de controle, e os pontos das curvas. O usuário também poderá determinar o número de avaliações que deverá ser usado para então o sistema calcular os correspondentes pontos da curva e ligá-los por retas. As avaliações deverão ser feitas obrigatoriamente com o Algoritmo de de Casteljau.  
 
 ### Curso
-Universidade Federal de Pernambuco
-Centro de Informática
-Gradução em Ciência da Computação
-Programação Gráfica
+Universidade Federal de Pernambuco\n
+Centro de Informática\n
+Gradução em Ciência da Computação\n
+Programação Gráfica\n
 
 ### Autores
 - Douglas Soares Lins | dsl@cin.ufpe.br
