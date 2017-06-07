@@ -5,7 +5,7 @@ const PATH_STROKE = 1;
 const BEZIER_COLOR = 'red';
 const BEZIER_STROKE = 5;
 
-var EVALUATIONS = 500;
+var evaluations = 500;
 
 var path1 = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
 var path2 = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
@@ -25,7 +25,13 @@ var points4 = [];
 var whichPoints;
 var countPoints = 0;
 
+stage.on('message', function(data){
+  evaluations = parseInt(data.nodeData);
+});
+
 stage.on('click', function(clickEvent) {
+
+  stage.sendMessage('ready', {});
 
     target = clickEvent.target;
 
@@ -44,9 +50,9 @@ stage.on('click', function(clickEvent) {
         }else if(points4.length < 4){
             points4.push(point.id);
         }
-        
+
         countPoints++;
-        
+
         point.on('drag', function(dragEvent){
             this.attr({"x": dragEvent.x, "y": dragEvent.y});
 
@@ -95,9 +101,9 @@ stage.on('click', function(clickEvent) {
 
             point_removed = this.id;
             stage.removeChild(this);
-            
+
             countPoints --;
-            
+
             if(points1.includes(point_removed)){
                 segments = path1.segments();
                 index = points1.indexOf(point_removed);
@@ -220,7 +226,7 @@ function drawBezierCurve1() {
   var n = points.length - 1;
   var x = 0, y = 0;
 
-  for(var t = 1 / EVALUATIONS; t < 1; t += 1 / EVALUATIONS, x = 0, y = 0) {
+  for(var t = 1 / evaluations; t < 1; t += 1 / evaluations, x = 0, y = 0) {
       for(var p = 1; p < points.length; p++) {
         for(var c = 0; c < points.length - p; c++) {
           points[c][1] = (1 - t) * points[c][1] + t * points[c + 1][1];
@@ -251,7 +257,7 @@ function drawBezierCurve2() {
   var n = points.length - 1;
   var x = 0, y = 0;
 
-  for(var t = 1 / EVALUATIONS; t < 1; t += 1 / EVALUATIONS, x = 0, y = 0) {
+  for(var t = 1 / evaluations; t < 1; t += 1 / evaluations, x = 0, y = 0) {
       for(var p = 1; p < points.length; p++) {
         for(var c = 0; c < points.length - p; c++) {
           points[c][1] = (1 - t) * points[c][1] + t * points[c + 1][1];
@@ -283,7 +289,7 @@ function drawBezierCurve3() {
   var n = points.length - 1;
   var x = 0, y = 0;
 
-  for(var t = 1 / EVALUATIONS; t < 1; t += 1 / EVALUATIONS, x = 0, y = 0) {
+  for(var t = 1 / evaluations; t < 1; t += 1 / evaluations, x = 0, y = 0) {
       for(var p = 1; p < points.length; p++) {
         for(var c = 0; c < points.length - p; c++) {
           points[c][1] = (1 - t) * points[c][1] + t * points[c + 1][1];
@@ -315,7 +321,7 @@ function drawBezierCurve4() {
   var n = points.length - 1;
   var x = 0, y = 0;
 
-  for(var t = 1 / EVALUATIONS; t < 1; t += 1 / EVALUATIONS, x = 0, y = 0) {
+  for(var t = 1 / evaluations; t < 1; t += 1 / evaluations, x = 0, y = 0) {
       for(var p = 1; p < points.length; p++) {
         for(var c = 0; c < points.length - p; c++) {
           points[c][1] = (1 - t) * points[c][1] + t * points[c + 1][1];

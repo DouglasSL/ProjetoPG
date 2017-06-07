@@ -8,7 +8,7 @@
   <BODY>
     <DIV ID="header">
       <DIV ID="university" CLASS="header-item bottom">
-        <P>Universidade federal de Pernambuco</P>
+        <P>Universidade Federal de Pernambuco</P>
       </DIV>
       <DIV ID="title" CLASS="header-item">
         <P CLASS="text-title">Curva de Bézier</P>
@@ -21,7 +21,12 @@
     </DIV>
     <DIV ID="stage">
       <DIV ID="inner-stage">
+        <LABEL> Número de avaliações: </LABEL>
+        <INPUT ID="eval" type="number" value="500" oninput="sendEval()">
         <SCRIPT>
+          if(document.getElementById('eval').val) {
+            eval = document.getElementById('eval').val;
+          } else eval = '500';
           var b = document.getElementById("inner-stage"),
               x = b.offsetWidth,
               y = b.offsetHeight - 150;
@@ -30,7 +35,15 @@
             width: x,
             height: y
           }
-          bonsai.run(document.getElementById('inner-stage'), options);
+          var movie = bonsai.run(document.getElementById('inner-stage'), options);
+          var sendEval = function() {
+            eval = document.getElementById('eval').value;
+            movie.on('message:ready', function() {
+              movie.sendMessage({
+                nodeData: eval
+              });
+            });
+          }
         </SCRIPT>
       </DIV>
     </DIV>
