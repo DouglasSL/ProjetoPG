@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title> Cúbicas de Bézier controladas por cúbicas de Bézier </title>
+    <script src="bonsai.min.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1 class="title"> Transformação Interativa de Cúbicas de Bézier Controladas por Cúbicas de Bézier </h1>
+    <div class="params">
+      Número de avaliações:
+      <input id="eval" type="number" value="500" oninput="sendData()">
+      Esconder pontos:
+      <input id="check_points" type="checkbox">
+    </div>
+    <div id="stage">
+      <script>
+        if(document.getElementById('eval').val) {
+          eval = document.getElementById('eval').val;
+        } else eval = '500';
+        var b = document.getElementById("stage"),
+            x = b.offsetWidth,
+            y = b.offsetHeight;
+        var options = {
+          url: 'stage.js',
+          width: x,
+          height: y
+        }
+        var movie = bonsai.run(document.getElementById('stage'), options);
+        var sendData = function() {
+          eval = document.getElementById("eval").value,
+          movie.on('message:ready', function() {
+            movie.sendMessage({
+              eval: eval
+            });
+          });
+        }
+      </script>
+    </div>
+  </body>
+
+</html>
