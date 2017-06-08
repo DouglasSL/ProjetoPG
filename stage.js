@@ -130,7 +130,7 @@ stage.on('click', function(clickEvent) {
 
     if(countPoints == 16) {
       stage.sendMessage("sixteen", {});
-      draw();
+      draw_by_points();
     }
 
   }
@@ -163,7 +163,7 @@ function drawBezierCurve(i) {
   bezier_curves[i].lineTo(points[n][1], points[n][2]);
 }
 
-function draw(){
+function draw_by_points(){
   var controlPoints = [];
   var count = 0;
   var aux = paths[3].segments();
@@ -215,3 +215,34 @@ function drawBezierCurve_n(i, points) {
    c_bezier_curves[i].moveTo(points[n][1], points[n][2]);
 }
 
+function draw_by_bezier(){
+  var controlPoints = [];
+  var curve = 0;
+  for (t = 0; t <= 1; t += 1/sb) {
+    var tpoints = [];
+    for (i = 0; i < evaluations; i++){
+      controlPoints[0] = bezier_curves[0].segments()[i];
+      controlPoints[1] = bezier_curves[1].segments()[i];
+      controlPoints[2] = bezier_curves[2].segments()[i];
+      controlPoints[3] = bezier_curves[3].segments()[i];
+
+      for(var p = 1; p < 4; p++) {
+        for(var c = 0; c < 4 - p; c++) {
+          controlPoints[c][1] = (1 - t) * controlPoints[c][1] + t * controlPoints[c + 1][1];
+          controlPoints[c][2] = (1 - t) * controlPoints[c][2] + t * controlPoints[c + 1][2];
+        }
+      }
+      tpoints.push(controlPoints[0]);
+    }
+
+    t_bezier_curves[curve] = new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage);
+    t_bezier_curves[curve].moveTo(tpoints[0][1], tpoints[0][2]);
+
+    for (tp = 1; tp < tpoints.length - 1; tp++){
+      t_bezier_curves[curve].lineTo(tpoints[tp][1], tpoints[tp][2]);
+    }
+
+    t_bezier_curves[curve].moveTo(tpoints[tpoints.length - 1][1], tpoints[tpoints.length - 1][2]);
+    curve++;
+  }
+}
