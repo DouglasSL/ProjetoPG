@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="./bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
   </head>
   <body>
     <!-- <h1 class="title"> Transformação Interativa de Cúbicas de Bézier Controladas por Cúbicas de Bézier </h1> -->
@@ -16,7 +17,7 @@
 
         <label style="color: black">Parâmetro das curvas:</label>
         <label style="float: right; margin-right: 5px; margin-left: 5px;" id="show_t"></label>
-        <input oninput="change_t()" type="range" id="t" min="1" max="200">
+        <input oninput="change_t()" type="range" id="t" min="1" max="100">
         <label id="show_t"></label>
 
         <script>
@@ -29,6 +30,7 @@
       <label class="checkbox-inline"><input class="check" type="checkbox" value="">Pontos</label>
       <label class="checkbox-inline"><input class="check" type="checkbox" value="">Curvas</label>
       <label class="checkbox-inline"><input class="check" type="checkbox" value="">Segmentos</label>
+      <button onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Draw curves</button>
     </div>
 
     <div id="stage">
@@ -47,6 +49,10 @@
           eval = document.getElementById("eval").value,
           movie.sendMessage({eval: eval});
         }
+        var drawCurves = function() {
+          var t = document.getElementById("t").value;
+          movie.sendMessage("draw", {t: t});
+        }
         movie.on("message:here", function(data){
           document.getElementById('eval').value = data.eval;
         });
@@ -54,6 +60,7 @@
           var x = document.getElementById("t").value;
           document.getElementById("show_t").innerHTML = x;
           document.getElementById('t').disabled = false;
+          document.getElementById('btn-draw').disabled = false;
         });
       </script>
     </div>

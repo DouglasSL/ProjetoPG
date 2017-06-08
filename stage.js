@@ -132,8 +132,13 @@ stage.on('click', function(clickEvent) {
       stage.sendMessage("sixteen", {});
       draw_by_points();
     }
-
   }
+});
+
+stage.on('message:draw', function(data) {
+  sb = data.t;
+  t_bezier_curves = [];
+  draw();
 });
 
 function drawBezierCurve(i) {
