@@ -124,10 +124,14 @@ stage.on('click', function(clickEvent) {
 
     if(countPoints == 16) {
       stage.sendMessage("sixteen", {});
-      draw();
     }
-
   }
+});
+
+stage.on('message:draw', function(data) {
+  sb = data.t;
+  t_bezier_curves = [];
+  draw();
 });
 
 function drawBezierCurve(i) {
