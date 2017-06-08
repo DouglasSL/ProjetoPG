@@ -9,97 +9,70 @@ body {
   border: 0;
   width: 100%;
   height: 100%;
-
-  display: flex;
-  flex-flow: column nowrap;
+  background-color: #6d695c;
+  background-image:
+  repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+  repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+  linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+  linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+  background-size: 70px 120px;
 }
 
-p {
-  margin: 0;
-  padding: 0;
-  border: 0;
+label {
+  color: black;
 }
 
-input {
-  width: 10%;
+.title {
+  text-align: center;
+  margin: 2px;
+  font-family: novaBold;
+  color: black;
 }
 
-#header {
-  order: 1;
-  flex: 0 0 80px;
-
+.params {
+  margin: 0 auto;
+  text-align: center;
+  background-color: grey;
+  border-radius: 25px;
+  width: 60vw;
+  margin-bottom: 15px;
+  margin-top: 4px;
   padding: 10px;
-  background-color: green;
+}
 
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
+.text {
+  text-align: center;
+  margin-left: 5px;
+  width: 25%;
+  border: none;
+  border-radius: 25px;
+}
+
+.item {
+  border-bottom: thin solid black;
+}
+
+#t {
+  width: 30%;
+  float:right;
+}
+
+#t:disabled:hover {
+  cursor: not-allowed;
 }
 
 #stage {
-  order: 2;
-  flex: 1;
+  width: 85vw;
+  height: 85vh;
+  -webkit-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
 
-  border: 5px solid black;
-  overflow: hidden;
-
-  display: flex;
-  flex-flow: column nowrap;
+  margin: 0 auto;
+  background-color: white;
 }
 
-#config {
-  order: 3;
-  flex: 0 0 140px;
-
-  padding: 5px;
-  background-color: green;
-
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-#inner-stage {
-  order: 1;
-  flex: 1;
-
-  width: 100%;
-  height: 100%;
-}
-
-.text-title {
-  color: blue;
-  font-size: 30px;
-  font-style: italic;
-  text-align: center;
-}
-
-.header-item {
-  order: 1;
-  flex: 1;
-}
-
-.bottom {
-  align-self: flex-end;
-}
-
-.bottom:last-child {
-  text-align: right;
-}
-
-.config-group {
-  order: 1;
-  flex: 1;
-
-  margin: 5px;
-  border: 1px solid black;
-}
-
-#algorithms {
-}
-
-#parameters {
-}
-
-#design {
+@font-face {
+  font-family: novaBold;
+  src: url("./NOVABOLD.otf");
 }

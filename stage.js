@@ -29,6 +29,14 @@ for(i = 0; i < 4; i++){
 var t_bezier_curves = [];
 var all_points = [[], [], [], []];
 
+stage.on('message', function(data){
+  evaluations = parseInt(data.eval);
+  bezier_curves.forEach(function(bc, ie){
+    drawBezierCurve(ie);
+  });
+});
+
+stage.sendMessage('here', {eval: evaluations});
 
 /*
  * All the code
@@ -36,7 +44,7 @@ var all_points = [[], [], [], []];
 
 stage.on('click', function(clickEvent) {
 
-// stage.sendMessage('ready', {});
+  stage.sendMessage('ready', {});
 
   target = clickEvent.target;
 
@@ -114,7 +122,10 @@ stage.on('click', function(clickEvent) {
       }
     });
 
-    if(countPoints == 16) draw();
+    if(countPoints == 16) {
+      stage.sendMessage("sixteen", {});
+      draw();
+    }
 
   }
 });
