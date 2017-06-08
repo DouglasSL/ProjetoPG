@@ -29,8 +29,10 @@ for(i = 0; i < 4; i++){
   bezier_curves.push(new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage));
 }
 
-for(i = 0; i <= sb; i++){
-	c_bezier_curves.push(new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage));
+function create_c_bezier(){
+  for(i = 0; i <= sb; i++){
+  	c_bezier_curves.push(new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage));
+  }
 }
 
 var all_points = [[], [], [], []];
@@ -130,15 +132,14 @@ stage.on('click', function(clickEvent) {
 
     if(countPoints == 16) {
       stage.sendMessage("sixteen", {});
-      draw_by_points();
     }
   }
 });
 
 stage.on('message:draw', function(data) {
   sb = data.t;
-  t_bezier_curves = [];
-  draw();
+  // console.log(sb);
+  draw_by_points();
 });
 
 function drawBezierCurve(i) {
@@ -164,14 +165,16 @@ function drawBezierCurve(i) {
 
     bezier_curves[i].lineTo(x, y);
   }
-  
+
   bezier_curves[i].lineTo(points[n][1], points[n][2]);
 }
 
 function draw_by_points(){
+  create_c_bezier();
   var controlPoints = [];
   var count = 0;
   var aux = paths[3].segments();
+  console.log(sb);
   for (q = 0; q < 1.001; q += 1/sb) {
     var tpoints = [];
     for (i = 0; i < 4; i++){
@@ -191,9 +194,9 @@ function draw_by_points(){
 	drawBezierCurve_n(count, tpoints);
 	count++;
   }
-  
+
   //drawBezierCurve_n(count, aux);
-   
+
 }
 
 
@@ -221,6 +224,7 @@ function drawBezierCurve_n(i, points) {
 }
 
 function draw_by_bezier(){
+  create_c_bezier();
   var controlPoints = [];
   var curve = 0;
   for (t = 0; t <= 1; t += 1/sb) {
