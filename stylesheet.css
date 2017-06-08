@@ -52,6 +52,15 @@ label {
   border-bottom: thin solid black;
 }
 
+#t {
+  width: 30%;
+  float:right;
+}
+
+#t:hover {
+  cursor: not-allowed;
+}
+
 #stage {
   width: 85vw;
   height: 85vh;
