@@ -36,6 +36,7 @@ stage.on('message', function(data){
   });
 });
 
+stage.sendMessage('here', {eval: evaluations});
 
 /*
  * All the code
@@ -121,7 +122,10 @@ stage.on('click', function(clickEvent) {
       }
     });
 
-    if(countPoints == 16) draw();
+    if(countPoints == 16) {
+      stage.sendMessage("sixteen", {});
+      draw();
+    }
 
   }
 });

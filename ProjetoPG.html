@@ -12,20 +12,18 @@
     <div class="params">
       <div class="item">
         <label style="color: black">Número de avaliações:</label>
-        <input class="text" id="eval" type="number" value="500" oninput="sendData()">
+        <input class="text" id="eval" type="number" oninput="sendData()">
 
         <label style="color: black">Parâmetro das curvas:</label>
         <label style="float: right; margin-right: 5px; margin-left: 5px;" id="show_t"></label>
-        <input oninput="change_t()" type="range" id="t" min="1" max="200" disabled>
+        <input oninput="change_t()" type="range" id="t" min="1" max="200">
         <label id="show_t"></label>
 
         <script>
-          var x = document.getElementById("t").value;
-          document.getElementById("show_t").innerHTML = x;
-            function change_t(){
-              var x = document.getElementById("t").value;
-              document.getElementById("show_t").innerHTML = x;
-            }
+          function change_t(){
+            var x = document.getElementById("t").value;
+            document.getElementById("show_t").innerHTML = x;
+          }
         </script>
       </div>
       <label class="checkbox-inline"><input class="check" type="checkbox" value="">Pontos</label>
@@ -35,9 +33,7 @@
 
     <div id="stage">
       <script>
-        if(document.getElementById('eval').val) {
-          eval = document.getElementById('eval').val;
-        } else eval = '500';
+        document.getElementById('t').disabled = true;
         var b = document.getElementById("stage"),
             x = b.offsetWidth,
             y = b.offsetHeight;
@@ -49,12 +45,16 @@
         var movie = bonsai.run(document.getElementById('stage'), options);
         var sendData = function() {
           eval = document.getElementById("eval").value,
-          movie.on('message:ready', function() {
-            movie.sendMessage({
-              eval: eval
-            });
-          });
+          movie.sendMessage({eval: eval});
         }
+        movie.on("message:here", function(data){
+          document.getElementById('eval').value = data.eval;
+        });
+        movie.on("message:sixteen", function(){
+          var x = document.getElementById("t").value;
+          document.getElementById("show_t").innerHTML = x;
+          document.getElementById('t').disabled = false;
+        });
       </script>
     </div>
   </body>

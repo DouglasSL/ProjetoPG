@@ -57,7 +57,7 @@ label {
   float:right;
 }
 
-#t:hover {
+#t:disabled:hover {
   cursor: not-allowed;
 }
 
