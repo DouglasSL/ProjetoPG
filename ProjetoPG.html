@@ -27,9 +27,15 @@
           }
         </script>
       </div>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Pontos</label>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Curvas</label>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Segmentos</label>
+      <label class="checkbox-inline">
+        <input onchange="checkbox('points')" class="check" type="checkbox" id="points" checked> Pontos
+      </label>
+      <label class="checkbox-inline">
+        <input class="check" type="checkbox" id="curves" checked>Curvas
+      </label>
+      <label class="checkbox-inline">
+        <input class="check" type="checkbox" id="segments" checked>Segmentos
+      </label>
       <button onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Draw curves</button>
     </div>
 
@@ -52,6 +58,10 @@
         var drawCurves = function() {
           var t = document.getElementById("t").value;
           movie.sendMessage("draw", {t: t});
+        }
+        var checkbox = function(id) {
+          var check = document.getElementById(id).checked;
+          movie.sendMessage('hide', {id: id, checked: check});
         }
         movie.on("message:here", function(data){
           document.getElementById('eval').value = data.eval;

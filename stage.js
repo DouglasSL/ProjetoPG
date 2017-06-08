@@ -142,6 +142,26 @@ stage.on('message:draw', function(data) {
   draw_by_points();
 });
 
+stage.on('message:hide', function(data){
+  hide(data.id, data.checked);
+});
+
+function hide(id, checked){
+  var transp = new color.RGBAColor(0, 0, 0, 0.0);
+  if(id == 'points'){
+    all_points.forEach(function(points){
+      points.forEach(function(point){
+        stage.children().forEach(function(e){
+          if(e.id == point) {
+            if(!checked) e.fill(transp);
+            else e.fill(POINT_COLOR);
+          }
+        })
+      });
+    });
+  }
+}
+
 function drawBezierCurve(i) {
   var n, x, y;
   if(paths[i].segments().length < 2) return;
