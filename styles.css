@@ -34,7 +34,7 @@ label {
   text-align: center;
   background-color: grey;
   border-radius: 25px;
-  width: 60vw;
+  width: 80vw;
   margin-bottom: 15px;
   margin-top: 4px;
   padding: 10px;
@@ -43,7 +43,7 @@ label {
 .text {
   text-align: center;
   margin-left: 5px;
-  width: 25%;
+  width: 10%;
   border: none;
   border-radius: 25px;
 }
@@ -53,12 +53,21 @@ label {
 }
 
 #t {
-  width: 30%;
-  float:right;
+  width: 20%;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 #t:disabled:hover {
   cursor: not-allowed;
+}
+
+#show_t {
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 10px;
+  border: thin solid white;
+  padding: 10px;
 }
 
 #stage {
