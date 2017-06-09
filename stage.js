@@ -95,6 +95,7 @@ function draw_by_points(){
   }
 }
 
+/* Auxiliar function */
 function drawBezierCurve_n(i, points) {
   var n, x, y;
   c_bezier_curves[i].segments(Array(0));
@@ -118,16 +119,14 @@ function drawBezierCurve_n(i, points) {
    c_bezier_curves[i].moveTo(points[n][1], points[n][2]);
 }
 
+
+/* Gets the evaluation value from the front */
 stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
   bezier_curves.forEach(function(bc, ie){
     drawBezierCurve(ie);
   });
 });
-
-/*
- * All the code
-*/
 
 /*
  * Hide points, curves and segments functions
@@ -138,6 +137,7 @@ stage.on('message:hide', function(data){
 
 function hide(id, checked){
   var transp = new color.RGBAColor(0, 0, 0, 0.0);
+  // var arr, color, stroke;
   if(id == 'points'){
     all_points.forEach(function(points){
       points.forEach(function(point){
@@ -149,15 +149,13 @@ function hide(id, checked){
         })
       });
     });
-  } else if (id == 'segments'){
-    paths.forEach(function(path){
-      if(!checked) path.stroke(transp, PATH_STROKE).addTo(stage);
-      else path.stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
-    });
-  } else if(id == 'curves'){
-    bezier_curves.forEach(function(bc){
-      if(!checked) bc.stroke(transp, PATH_STROKE).addTo(stage);
-      else bc.stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
+  } else {
+    if (id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
+    else if(id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
+    else if(id == 't_curves') {arr = c_bezier_curves; col = T_BEZIER_COLOR; stroke = T_BEZIER_STROKE;}
+    arr.forEach(function(el){
+      if(!checked) el.stroke(transp, stroke).addTo(stage);
+      else el.stroke(col, stroke).addTo(stage);
     });
   }
 }
@@ -174,7 +172,7 @@ stage.on('message:draw', function(data) {
 stage.on('click', function(clickEvent) {
 
   target = clickEvent.target;
-  
+
   if(target.id <= 2 && 'id' in target && countPoints < 16){
     x = clickEvent.x;
     y = clickEvent.y;
