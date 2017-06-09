@@ -13,7 +13,7 @@
     <div class="params">
       <div class="item">
         <label style="color: black">Número de avaliações:</label>
-        <input class="text" id="eval" type="number" oninput="sendData()">
+        <input class="text" id="eval" type="number" oninput="sendEval()">
 
         <label style="color: black">Parâmetro das curvas:</label>
         <label style="float: right; margin-right: 5px; margin-left: 5px;" id="show_t"></label>
@@ -51,9 +51,14 @@
           height: y
         }
         var movie = bonsai.run(document.getElementById('stage'), options);
-        var sendData = function() {
-          eval = document.getElementById("eval").value,
-          movie.sendMessage({eval: eval});
+        var sendEval = function() {
+          eval = document.getElementById("eval").value;
+          if(eval <= 1000 && eval > 0){
+            document.getElementById("eval").style.backgroundColor = 'white';
+            movie.sendMessage("getEval", {eval: eval});
+          } else {
+            document.getElementById("eval").style.backgroundColor = 'red';
+          }
         }
         var drawCurves = function() {
           var t = document.getElementById("t").value;
