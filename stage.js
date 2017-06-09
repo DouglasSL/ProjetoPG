@@ -73,7 +73,6 @@ function draw_by_points(){
   var controlPoints = [];
   var count = 0;
   var aux = paths[3].segments();
-  console.log(sb);
   for (q = 0; q < 1.001; q += 1/sb) {
     var tpoints = [];
     for (i = 0; i < 4; i++){
@@ -137,7 +136,7 @@ stage.on('message:hide', function(data){
 
 function hide(id, checked){
   var transp = new color.RGBAColor(0, 0, 0, 0.0);
-  // var arr, color, stroke;
+  var arr, col, stroke;
   if(id == 'points'){
     all_points.forEach(function(points){
       points.forEach(function(point){

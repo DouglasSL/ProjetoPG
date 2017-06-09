@@ -37,7 +37,7 @@
         <input onchange="checkbox('curves')" class="check" type="checkbox" id="curves" checked>Curvas
       </label>
       <label class="checkbox-inline">
-        <input onchange="checkbox('t_curves')" class="check" type="checkbox" id="t_curves" checked>T-Curvas
+        <input onchange="checkbox('t_curves')" class="check" type="checkbox" id="t_curves" checked disabled>T-Curvas
       </label>
       <button onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Draw curves</button>
     </div>
@@ -79,11 +79,13 @@
           document.getElementById("show_t").innerHTML = x;
           document.getElementById('t').disabled = false;
           document.getElementById('btn-draw').disabled = false;
+          document.getElementById('t_curves').disabled = false;
         });
         movie.on("message:deactivate", function(){
           document.getElementById("show_t").innerHTML = null;
           document.getElementById('t').disabled = true;
           document.getElementById('btn-draw').disabled = true;
+          document.getElementById('t_curves').disabled = true;
         });
       </script>
     </div>
