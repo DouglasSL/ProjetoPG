@@ -50,6 +50,43 @@ stage.sendMessage('here', {eval: evaluations});
  * All the code
 */
 
+/*
+ * Hide points, curves and segments functions
+*/
+stage.on('message:hide', function(data){
+  hide(data.id, data.checked);
+});
+
+function hide(id, checked){
+  var transp = new color.RGBAColor(0, 0, 0, 0.0);
+  if(id == 'points'){
+    all_points.forEach(function(points){
+      points.forEach(function(point){
+        stage.children().forEach(function(e){
+          if(e.id == point) {
+            if(!checked) e.fill(transp);
+            else e.fill(POINT_COLOR);
+          }
+        })
+      });
+    });
+  } else if (id == 'segments'){
+    paths.forEach(function(path){
+      if(!checked) path.stroke(transp, PATH_STROKE).addTo(stage);
+      else path.stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+    });
+  } else if(id == 'curves'){
+    bezier_curves.forEach(function(bc){
+      if(!checked) bc.stroke(transp, PATH_STROKE).addTo(stage);
+      else bc.stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
+    });
+  }
+}
+
+
+/*
+ * Click based functions
+*/
 stage.on('click', function(clickEvent) {
 
   stage.sendMessage('ready', {});
@@ -141,26 +178,6 @@ stage.on('message:draw', function(data) {
   // console.log(sb);
   draw_by_points();
 });
-
-stage.on('message:hide', function(data){
-  hide(data.id, data.checked);
-});
-
-function hide(id, checked){
-  var transp = new color.RGBAColor(0, 0, 0, 0.0);
-  if(id == 'points'){
-    all_points.forEach(function(points){
-      points.forEach(function(point){
-        stage.children().forEach(function(e){
-          if(e.id == point) {
-            if(!checked) e.fill(transp);
-            else e.fill(POINT_COLOR);
-          }
-        })
-      });
-    });
-  }
-}
 
 function drawBezierCurve(i) {
   var n, x, y;
