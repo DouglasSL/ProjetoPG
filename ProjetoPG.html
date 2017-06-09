@@ -13,7 +13,7 @@
     <div class="params">
       <div class="item">
         <label style="color: black">Número de avaliações:</label>
-        <input class="text" id="eval" type="number" oninput="sendData()">
+        <input class="text" id="eval" type="number" oninput="sendEval()">
 
         <label style="color: black">Parâmetro das curvas:</label>
         <label style="float: right; margin-right: 5px; margin-left: 5px;" id="show_t"></label>
@@ -27,9 +27,18 @@
           }
         </script>
       </div>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Pontos</label>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Curvas</label>
-      <label class="checkbox-inline"><input class="check" type="checkbox" value="">Segmentos</label>
+      <label class="checkbox-inline">
+        <input onchange="checkbox('points')" class="check" type="checkbox" id="points" checked> Pontos
+      </label>
+      <label class="checkbox-inline">
+        <input onchange="checkbox('segments')" class="check" type="checkbox" id="segments" checked>Segmentos
+      </label>
+      <label class="checkbox-inline">
+        <input onchange="checkbox('curves')" class="check" type="checkbox" id="curves" checked>Curvas
+      </label>
+      <label class="checkbox-inline">
+        <input onchange="checkbox('t_curves')" class="check" type="checkbox" id="t_curves" checked disabled>T-Curvas
+      </label>
       <button onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Draw curves</button>
     </div>
 
@@ -45,22 +54,38 @@
           height: y
         }
         var movie = bonsai.run(document.getElementById('stage'), options);
-        var sendData = function() {
-          eval = document.getElementById("eval").value,
-          movie.sendMessage({eval: eval});
+        var sendEval = function() {
+          eval = document.getElementById("eval").value;
+          if(eval <= 1000 && eval > 0){
+            document.getElementById("eval").style.backgroundColor = 'white';
+            movie.sendMessage("getEval", {eval: eval});
+          } else {
+            document.getElementById("eval").style.backgroundColor = 'red';
+          }
         }
         var drawCurves = function() {
           var t = document.getElementById("t").value;
           movie.sendMessage("draw", {t: t});
         }
+        var checkbox = function(id) {
+          var check = document.getElementById(id).checked;
+          movie.sendMessage('hide', {id: id, checked: check});
+        }
         movie.on("message:here", function(data){
           document.getElementById('eval').value = data.eval;
         });
-        movie.on("message:sixteen", function(){
+        movie.on("message:activate", function(){
           var x = document.getElementById("t").value;
           document.getElementById("show_t").innerHTML = x;
           document.getElementById('t').disabled = false;
           document.getElementById('btn-draw').disabled = false;
+          document.getElementById('t_curves').disabled = false;
+        });
+        movie.on("message:deactivate", function(){
+          document.getElementById("show_t").innerHTML = null;
+          document.getElementById('t').disabled = true;
+          document.getElementById('btn-draw').disabled = true;
+          document.getElementById('t_curves').disabled = true;
         });
       </script>
     </div>
