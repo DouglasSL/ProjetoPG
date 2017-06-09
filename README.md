@@ -7,7 +7,7 @@ O usuário pode modificar o posicionamento dos pontos, deletar e inserir carreir
 ### Curso
 Universidade Federal de Pernambuco <br />
 Centro de Informática <br />
-Gradução em Ciência da Computação <br /><
+Gradução em Ciência da Computação <br />
 Programação Gráfica
 
 ### Autores
