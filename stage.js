@@ -15,24 +15,22 @@ const T_BEZIER_STROKE = 2;
  * Global variables
 */
 var evaluations = 500; //default value
+var t_evaluations = 50; //default value
 var sb = 20; //default value
 var countPoints = 0;
 var paths = [];
 var bezier_curves = [];
 var c_bezier_curves = [];
 var all_points = [[], [], [], []];
+var draw_t = false;
 for(i = 0; i < 4; i++){
   paths.push(new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage));
   bezier_curves.push(new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage));
 }
 
-/* Sends the default evaluations value to HTML */
-stage.sendMessage('here', {eval: evaluations});
-
 /*
  * Global functions
 */
-
 function create_c_bezier(){
   for(i = 0; i <= sb; i++){
   	c_bezier_curves.push(new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage));
@@ -89,13 +87,13 @@ function draw_by_points(){
       }
       tpoints.push(controlPoints[0]);
     }
-	drawBezierCurve_n(count, tpoints);
+	drawTBezierCurve(count, tpoints);
 	count++;
   }
 }
 
 /* Auxiliar function */
-function drawBezierCurve_n(i, points) {
+function drawTBezierCurve(i, points) {
   var n, x, y;
   c_bezier_curves[i].segments(Array(0));
 
@@ -103,7 +101,7 @@ function drawBezierCurve_n(i, points) {
   n = points.length - 1;
   x = 0, y = 0;
 
-  for(t = 1/evaluations; t < 1; t += 1/evaluations, x = 0, y = 0) {
+  for(t = 1/t_evaluations; t < 1; t += 1/t_evaluations, x = 0, y = 0) {
     for(p = 1; p < points.length; p++){
       for(c = 0; c < points.length - p; c++){
         points[c][1] = (1 - t) * points[c][1] + t * points[c + 1][1];
@@ -118,51 +116,57 @@ function drawBezierCurve_n(i, points) {
    c_bezier_curves[i].moveTo(points[n][1], points[n][2]);
 }
 
+/*
+ * Communication functions
+*/
 
-/* Gets the evaluation value from the front */
+/* Sends the default evaluations values to HTML */
+stage.sendMessage('here', {eval: evaluations, t_evaluations: t_evaluations});
+
+/* Gets the evaluatios value from the front */
 stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
+  t_evaluations = parseInt(data.t_eval);
+  sb = parseInt(data.t);
   bezier_curves.forEach(function(bc, ie){
+    drawBezierCurve(ie);
+  });
+  c_bezier_curves.forEach(function(bc, ie){
     drawBezierCurve(ie);
   });
 });
 
-/*
- * Hide points, curves and segments functions
-*/
-stage.on('message:hide', function(data){
-  hide(data.id, data.checked);
+/* Gets the button press to draw t_bezier_curves */
+stage.on('message:draw', function(data) {
+  sb = data.t;
+  draw_t = true;
+  draw_by_points();
 });
 
-function hide(id, checked){
+/* Hide points, curves and segments functions */
+stage.on('message:hide', function(data){
   var transp = new color.RGBAColor(0, 0, 0, 0.0);
   var arr, col, stroke;
-  if(id == 'points'){
+  if(data.id == 'points'){
     all_points.forEach(function(points){
       points.forEach(function(point){
         stage.children().forEach(function(e){
           if(e.id == point) {
-            if(!checked) e.fill(transp);
+            if(!data.checked) e.fill(transp);
             else e.fill(POINT_COLOR);
           }
         })
       });
     });
   } else {
-    if (id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
-    else if(id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
-    else if(id == 't_curves') {arr = c_bezier_curves; col = T_BEZIER_COLOR; stroke = T_BEZIER_STROKE;}
+    if (data.id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
+    else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
+    else if(data.id == 't_curves') {arr = c_bezier_curves; col = T_BEZIER_COLOR; stroke = T_BEZIER_STROKE;}
     arr.forEach(function(el){
-      if(!checked) el.stroke(transp, stroke).addTo(stage);
+      if(!data.checked) el.stroke(transp, stroke).addTo(stage);
       else el.stroke(col, stroke).addTo(stage);
     });
   }
-}
-
-/* Gets the button press to draw t_bezier_curves */
-stage.on('message:draw', function(data) {
-  sb = data.t;
-  draw_by_points();
 });
 
 /*
@@ -200,7 +204,7 @@ stage.on('click', function(clickEvent) {
           drawBezierCurve(i);
         }
       });
-      if(countPoints == 16) draw_by_points();
+      if(countPoints == 16 && draw_t) draw_by_points();
     });
 
 
@@ -238,6 +242,7 @@ stage.on('click', function(clickEvent) {
       all_points[whichPoints].pop();
       drawBezierCurve(whichPoints);
 
+      // Deactivate buttons when there aren't 16 points
       stage.sendMessage("deactivate", {});
     });
 
@@ -253,7 +258,7 @@ stage.on('click', function(clickEvent) {
       }
     });
 
-    // Activate buttons when there aren't 16 points
+    // Activate buttons when there are 16 points
     if(countPoints == 16) stage.sendMessage("activate", {});
   }
 });
