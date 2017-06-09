@@ -200,6 +200,7 @@ stage.on('click', function(clickEvent) {
           drawBezierCurve(i);
         }
       });
+      if(countPoints == 16) draw_by_points();
     });
 
 
