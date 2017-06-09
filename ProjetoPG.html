@@ -66,11 +66,16 @@
         movie.on("message:here", function(data){
           document.getElementById('eval').value = data.eval;
         });
-        movie.on("message:sixteen", function(){
+        movie.on("message:activate", function(){
           var x = document.getElementById("t").value;
           document.getElementById("show_t").innerHTML = x;
           document.getElementById('t').disabled = false;
           document.getElementById('btn-draw').disabled = false;
+        });
+        movie.on("message:deactivate", function(){
+          document.getElementById("show_t").innerHTML = null;
+          document.getElementById('t').disabled = true;
+          document.getElementById('btn-draw').disabled = true;
         });
       </script>
     </div>

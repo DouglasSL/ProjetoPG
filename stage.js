@@ -157,6 +157,8 @@ stage.on('click', function(clickEvent) {
       }
       all_points[whichPoints].pop();
       drawBezierCurve(whichPoints);
+
+      stage.sendMessage("deactivate", {});
     });
 
     all_points.forEach(function(points, i){
@@ -167,15 +169,12 @@ stage.on('click', function(clickEvent) {
       }
     });
 
-    if(countPoints == 16) {
-      stage.sendMessage("sixteen", {});
-    }
+    if(countPoints == 16) stage.sendMessage("activate", {});
   }
 });
 
 stage.on('message:draw', function(data) {
   sb = data.t;
-  // console.log(sb);
   draw_by_points();
 });
 
@@ -231,11 +230,7 @@ function draw_by_points(){
 	drawBezierCurve_n(count, tpoints);
 	count++;
   }
-
-  //drawBezierCurve_n(count, aux);
-
 }
-
 
 function drawBezierCurve_n(i, points) {
   var n, x, y;
