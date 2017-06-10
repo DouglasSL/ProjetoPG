@@ -128,12 +128,7 @@ stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
-  bezier_curves.forEach(function(bc, ie){
-    drawBezierCurve(ie);
-  });
-  c_bezier_curves.forEach(function(bc, ie){
-    drawBezierCurve(ie);
-  });
+  if(countPoints == 16) draw_by_points();
 });
 
 /* Gets the button press to draw t_bezier_curves */
@@ -155,7 +150,7 @@ stage.on('message:hide', function(data){
             if(!data.checked) e.fill(transp);
             else e.fill(POINT_COLOR);
           }
-        })
+        });
       });
     });
   } else {
@@ -212,41 +207,42 @@ stage.on('click', function(clickEvent) {
      * Delete point functions
     */
     point.on('doubleclick', function(dragEvent){
-      var segments, index, whichPoints;
-      point_removed = this.id;
-      stage.removeChild(this);
-
-      countPoints--;
+      var owner_num, num_of_points;
+      var point_clicked = this.id;
 
       all_points.forEach(function(points, i){
-        if(points.includes(point_removed)){
-          segments = paths[i].segments();
-          index = points.indexOf(point_removed);
-          whichPoints = i;
+        if(points.includes(point_clicked)){
+          owner_num = i;
+          countPoints -= points.length;
+          stage.removeChild(paths[i]);
+          stage.removeChild(bezier_curves[i]);
+          stage.children().forEach(function(ch){
+            if(points.includes(ch.id)){
+              stage.removeChild(ch);
+            }
+          });
         }
       });
-
-      for(var i = index; i < segments.length - 1; i++) {
-        segments[i] = segments[i + 1];
-        if(i === 0){
-          segments[0][0] = "moveTo";
+      for(i = owner_num; i < 4; i++){
+        if(i < 3) {
+          all_points[i] = all_points[i + 1];
+          paths[i] = paths[i+1];
+          bezier_curves[i] = bezier_curves[i + 1];
+        } else {
+          all_points[i] = [];
+          paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+          bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
       }
-
-      segments = segments.splice(0, segments.length - 1);
-
-      paths[whichPoints].segments(segments);
-      for(i = index; i < all_points[whichPoints].length - 1; i++) {
-        all_points[whichPoints][i] = all_points[whichPoints][i+1];
-      }
-      all_points[whichPoints].pop();
-      drawBezierCurve(whichPoints);
-
-      // Deactivate buttons when there aren't 16 points
       stage.sendMessage("deactivate", {});
+      if(draw_t) {
+        var arr = c_bezier_curves;
+        arr.forEach(function(cb){
+          stage.removeChild(cb);
+        });
+        c_bezier_curves = [];
+      }
     });
-
-
     /*
      * Draw functions
     */
