@@ -226,16 +226,25 @@ stage.on('click', function(clickEvent) {
               stage.removeChild(ch);
             }
           });
+          // paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+          // bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
+        }
+      });
+      for(i = owner_num; i < 4; i++){
+        if(i < 3) {
+          all_points[i] = all_points[i + 1];
+          paths[i] = paths[i+1];
+          bezier_curves[i] = bezier_curves[i + 1];
+        } else {
           all_points[i] = [];
           paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
           bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
-      });
-      console.log(owner_num);
+      }
       stage.sendMessage("deactivate", {});
     });
 
-
+    console.log(all_points);
     /*
      * Draw functions
     */
