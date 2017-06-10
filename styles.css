@@ -72,15 +72,10 @@ label {
 
 #stage {
   width: 85vw;
-  height: 85vh;
+  height: 78vh;
   -webkit-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   margin: 0 auto;
   background-color: white;
-}
-
-@font-face {
-  font-family: novaBold;
-  src: url(".assets/NOVABOLD.otf");
 }
