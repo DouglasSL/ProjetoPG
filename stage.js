@@ -199,9 +199,7 @@ stage.on('click', function(clickEvent) {
           drawBezierCurve(i);
         }
       });
-      if(countPoints == 16 && draw_t) {
-        draw_by_points();
-      }
+      if(countPoints == 16 && draw_t) draw_by_points();
     });
 
 
@@ -223,8 +221,6 @@ stage.on('click', function(clickEvent) {
               stage.removeChild(ch);
             }
           });
-          // paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
-          // bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
       });
       for(i = owner_num; i < 4; i++){
