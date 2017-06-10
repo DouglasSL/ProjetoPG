@@ -22,6 +22,7 @@ var paths = [];
 var bezier_curves = [];
 var c_bezier_curves = [];
 var all_points = [[], [], [], []];
+var colors = [];
 var draw_t = false;
 for(i = 0; i < 4; i++){
   paths.push(new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage));
@@ -31,9 +32,21 @@ for(i = 0; i < 4; i++){
 /*
  * Global functions
 */
+
+function getColors() {
+  var red = 255, green = 0, blue = 255;
+  for(i = 0; i <= sb; i++){
+    col = new color.RGBAColor(red, green, blue, 1);
+    colors.push(col);
+    red -= 256/sb;
+    green += 256/sb;
+    blue -= 256/sb;
+  }
+}
+
 function create_c_bezier(){
   for(i = 0; i <= sb; i++){
-  	c_bezier_curves.push(new Path().stroke(T_BEZIER_COLOR, T_BEZIER_STROKE).addTo(stage));
+    c_bezier_curves.push(new Path().stroke(colors[i], T_BEZIER_STROKE).addTo(stage));
   }
 }
 
@@ -128,13 +141,14 @@ stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
-  if(countPoints == 16) draw_by_points();
+  if(countPoints == 16 && draw_t) draw_by_points();
 });
 
 /* Gets the button press to draw t_bezier_curves */
 stage.on('message:draw', function(data) {
   sb = data.t;
   draw_t = true;
+  getColors();
   draw_by_points();
 });
 
@@ -153,13 +167,18 @@ stage.on('message:hide', function(data){
         });
       });
     });
-  } else {
+  } else if(data.id != "t_curves"){
     if (data.id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
     else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
-    else if(data.id == 't_curves') {arr = c_bezier_curves; col = T_BEZIER_COLOR; stroke = T_BEZIER_STROKE;}
     arr.forEach(function(el){
       if(!data.checked) el.stroke(transp, stroke).addTo(stage);
       else el.stroke(col, stroke).addTo(stage);
+    });
+  } else {
+    arr = c_bezier_curves; stroke = T_BEZIER_STROKE;
+    arr.forEach(function(el,i){
+      if(!data.checked) el.stroke(transp, stroke).addTo(stage);
+      else el.stroke(colors[i], stroke).addTo(stage);
     });
   }
 });
