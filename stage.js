@@ -212,11 +212,13 @@ stage.on('click', function(clickEvent) {
      * Delete point functions
     */
     point.on('doubleclick', function(dragEvent){
-      var segments, index, owned_by_seg;
-      point_clicked = this.id;
+      var owner_num, num_of_points;
+      var point_clicked = this.id;
 
       all_points.forEach(function(points, i){
         if(points.includes(point_clicked)){
+          owner_num = i;
+          countPoints -= points.length;
           stage.removeChild(paths[i]);
           stage.removeChild(bezier_curves[i]);
           stage.children().forEach(function(ch){
@@ -224,9 +226,13 @@ stage.on('click', function(clickEvent) {
               stage.removeChild(ch);
             }
           });
+          all_points[i] = [];
+          paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+          bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
       });
-
+      console.log(owner_num);
+      stage.sendMessage("deactivate", {});
     });
 
 
