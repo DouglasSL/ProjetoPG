@@ -36,30 +36,38 @@ for(i = 0; i < 4; i++){
 function getColors() {
   colors = [];
   var red = 255, green = 0, blue = 0;
-  var calc;
   var block_green = false;
   var block_red = false;
+  var calc = 256/sb;
   for(i = 0; i <= sb; i++){
     col = new color.RGBAColor(red, green, blue, 0.5);
     colors.push(col);
     if(green < 255 && !block_green){
-      green += 256/sb * 3;
+      green += calc * 2.5;
       if(green > 255) green = 255;
     } else if (red > 0 && !block_red) {
-      red -= 256/sb * 3;
+      red -= calc * 4;
       if(red < 0) red = 0;
     } else if(green > 0 && blue < 255) {
       block_green = true;
-      green -= 256/sb * 3;
-      blue += 256/sb * 3;
+      green -= calc * 4;
+      blue += calc * 4;
       if(green < 0) green = 0;
       if(blue > 255) blue = 255;
-    } else if(red < 143 && blue > 255) {
+    } else if(red < 75 && blue > 130) {
       block_red = true;
-      red += 256/sb * 3;
-      blue -= 256/sb * 3;
+      red += calc * 4;
+      blue -= calc * 4;
+      if(blue < 130) blue = 130;
+      if(red > 255) red = 255;
+    } else if(red < 143 && blue < 255){
+      red += calc * 4.5;
+      blue += calc * 4.5;
+      if(blue > 0) blue = 255;
+      if(red > 255) red = 255;
     }
   }
+  console.log(colors[sb]);
 }
 
 function removeCurves() {
