@@ -36,12 +36,20 @@ for(i = 0; i < 4; i++){
 function getColors() {
   var red = 255, green = 0, blue = 255;
   for(i = 0; i <= sb; i++){
-    col = new color.RGBAColor(red, green, blue, 1);
+    col = new color.RGBAColor(red, green, blue, 0.5);
     colors.push(col);
     red -= 256/sb;
     green += 256/sb;
     blue -= 256/sb;
   }
+}
+
+function removeCurves() {
+  var arr = c_bezier_curves;
+  arr.forEach(function(cb){
+    stage.removeChild(cb);
+  });
+  c_bezier_curves = [];
 }
 
 function create_c_bezier(){
@@ -141,13 +149,18 @@ stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
+  var arr = c_bezier_curves;
+  removeCurves();
+  getColors();
   if(countPoints == 16 && draw_t) draw_by_points();
 });
 
 /* Gets the button press to draw t_bezier_curves */
 stage.on('message:draw', function(data) {
-  sb = data.t;
   draw_t = true;
+  sb = parseInt(data.t);
+  var arr = c_bezier_curves;
+  removeCurves();
   getColors();
   draw_by_points();
 });
@@ -218,7 +231,11 @@ stage.on('click', function(clickEvent) {
           drawBezierCurve(i);
         }
       });
-      if(countPoints == 16 && draw_t) draw_by_points();
+      if(countPoints == 16 && draw_t) {
+        var arr = c_bezier_curves;
+        removeCurves();
+        draw_by_points();
+      }
     });
 
 
@@ -255,10 +272,7 @@ stage.on('click', function(clickEvent) {
       }
       stage.sendMessage("deactivate", {});
       if(draw_t) {
-        var arr = c_bezier_curves;
-        arr.forEach(function(cb){
-          stage.removeChild(cb);
-        });
+        removeCurves();
         c_bezier_curves = [];
       }
     });
