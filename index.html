@@ -97,13 +97,18 @@
           document.getElementById("show_t").innerHTML = x;
           document.getElementById('t').disabled = false;
           document.getElementById('btn-draw').disabled = false;
-          document.getElementById('t_curves').disabled = false;
+          // document.getElementById('t_curves').disabled = false;
         });
         movie.on("message:deactivate", function(){
           document.getElementById("show_t").innerHTML = "Disabled";
           document.getElementById('t').disabled = true;
           document.getElementById('btn-draw').disabled = true;
-          document.getElementById('t_curves').disabled = true;
+          // document.getElementById('t_curves').disabled = true;
+        });
+        movie.on("message:draw_t", function(data){
+          if(!data.bool) document.getElementById('t_curves').disabled = true;
+          else document.getElementById('t_curves').disabled = false;
+          document.getElementById('t_curves').checked = true;
         });
       </script>
     </div>

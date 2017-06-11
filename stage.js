@@ -188,6 +188,7 @@ stage.on('message:getEval', function(data){
 /* Gets the button press to draw t_bezier_curves */
 stage.on('message:draw', function(data) {
   draw_t = true;
+  stage.sendMessage('draw_t', {bool: draw_t});
   sb = parseInt(data.t);
   removeCurves();
   getColors();
@@ -228,8 +229,14 @@ stage.on('message:hide', function(data){
   } else {
     arr = c_bezier_curves; stroke = T_BEZIER_STROKE;
     arr.forEach(function(el,i){
-      if(!data.checked) el.stroke(transp, stroke).addTo(stage);
-      else el.stroke(colors[i], stroke).addTo(stage);
+      if(!data.checked){
+        draw_t = false;
+        el.stroke(transp, stroke).addTo(stage);
+      }
+      else {
+        draw_t = true;
+        el.stroke(colors[i], stroke).addTo(stage);
+      }
     });
   }
 });
@@ -314,6 +321,8 @@ stage.on('click', function(clickEvent) {
         removeCurves();
         c_bezier_curves = [];
       }
+      draw_t = false;
+      stage.sendMessage('draw_t', {bool: draw_t});
     });
     /*
      * Draw functions
