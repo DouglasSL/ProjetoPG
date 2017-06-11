@@ -20,24 +20,40 @@ body {
 
 label {
   color: black;
+  font-family: coco-gothic;
 }
 
 .title {
   text-align: center;
-  margin: 2px;
-  font-family: novaBold;
-  color: black;
+  margin: 0 auto;
+  font-family: coco-gothic;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 25px;
+  width: 70vw;
 }
 
 .params {
   margin: 0 auto;
   text-align: center;
-  background-color: grey;
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 25px;
   width: 80vw;
   margin-bottom: 15px;
   margin-top: 4px;
-  padding: 10px;
+  padding: 4px;
+}
+
+.view {
+  display: inline-block;
+  border: 2px solid #f8fce8;
+  border-radius: 20px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+p {
+  border-bottom: thin solid #f8fce8;
 }
 
 .text {
@@ -66,16 +82,21 @@ label {
   margin-right: 5px;
   margin-left: 5px;
   border-radius: 10px;
-  border: thin solid white;
+  border: thin solid #f8fce8;
   padding: 10px;
 }
 
 #stage {
   width: 85vw;
-  height: 78vh;
+  height: 65vh;
   -webkit-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 14px 6px rgba(0,0,0,0.75);
   margin: 0 auto;
   background-color: white;
+}
+
+@font-face {
+    font-family: coco-gothic;
+    src: url('./assets/CocoGothic-Light_trial.ttf');
 }

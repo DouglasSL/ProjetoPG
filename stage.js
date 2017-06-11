@@ -3,10 +3,10 @@
 */
 const POINT_COLOR = 'black';
 const POINT_RADIUS = 5;
-const PATH_COLOR = 'blue';
+var path_colors = ['blue', 'turquoise', 'green', 'brown'];
 const PATH_STROKE = 1;
-const BEZIER_COLOR = 'red';
-const BEZIER_STROKE = 5;
+var BEZIER_COLOR = 'red';
+const BEZIER_STROKE = 4;
 const T_BEZIER_COLOR = 'pink';
 const T_BEZIER_STROKE = 2;
 
@@ -25,7 +25,7 @@ var all_points = [[], [], [], []];
 var colors = [];
 var draw_t = false;
 for(i = 0; i < 4; i++){
-  paths.push(new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage));
+  paths.push(new Path().stroke(path_colors[i], PATH_STROKE).addTo(stage));
   bezier_curves.push(new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage));
 }
 
@@ -34,14 +34,42 @@ for(i = 0; i < 4; i++){
 */
 
 function getColors() {
-  var red = 255, green = 0, blue = 255;
+  colors = [];
+  var red = 255, green = 0, blue = 0;
+  var block_green = false;
+  var block_red = false;
+  var block_blue = false;
+  var calc = 256/sb;
   for(i = 0; i <= sb; i++){
     col = new color.RGBAColor(red, green, blue, 0.5);
     colors.push(col);
-    red -= 256/sb;
-    green += 256/sb;
-    blue -= 256/sb;
+    if(green < 255 && !block_green){
+      green += calc * 2.5;
+      if(green > 255) green = 255;
+    } else if (red > 0 && !block_red) {
+      red -= calc * 4;
+      if(red < 0) red = 0;
+    } else if(green > 0 && blue < 255 && !block_blue) {
+      block_green = true;
+      green -= calc * 3.8;
+      blue += calc * 3.8;
+      if(green < 0) green = 0;
+      if(blue > 255) blue = 255;
+    } else if(red < 75 && blue > 130 && !block_blue) {
+      block_red = true;
+      red += calc * 4;
+      blue -= calc * 4;
+      if(blue < 130) blue = 130;
+      if(red > 255) red = 255;
+    } else if(red < 143 && blue < 255){
+      block_blue = true;
+      red += calc * 4;
+      blue += calc * 4;
+      if(blue > 255) blue = 255;
+      if(red > 143) red = 143;
+    }
   }
+  console.log(colors[sb]);
 }
 
 function removeCurves() {
@@ -147,11 +175,14 @@ stage.sendMessage('here', {eval: evaluations, t_evaluations: t_evaluations});
 /* Gets the evaluatios value from the front */
 stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
+  bezier_curves.forEach(function(bc,i){
+      drawBezierCurve(i);
+  });
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
   var arr = c_bezier_curves;
-  removeCurves();
   getColors();
+  removeCurves();
   if(countPoints == 16 && draw_t) draw_by_points();
 });
 
@@ -159,7 +190,6 @@ stage.on('message:getEval', function(data){
 stage.on('message:draw', function(data) {
   draw_t = true;
   sb = parseInt(data.t);
-  var arr = c_bezier_curves;
   removeCurves();
   getColors();
   draw_by_points();
@@ -181,7 +211,13 @@ stage.on('message:hide', function(data){
       });
     });
   } else if(data.id != "t_curves"){
-    if (data.id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
+    if (data.id == 'segments') {
+      arr = paths; col = path_colors; stroke = PATH_STROKE;
+      arr.forEach(function(el,i){
+        if(!data.checked) el.stroke(transp, stroke).addTo(stage);
+        else el.stroke(col[i], stroke).addTo(stage);
+      });
+    }
     else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
     arr.forEach(function(el){
       if(!data.checked) el.stroke(transp, stroke).addTo(stage);
@@ -263,10 +299,11 @@ stage.on('click', function(clickEvent) {
         if(i < 3) {
           all_points[i] = all_points[i + 1];
           paths[i] = paths[i+1];
+          paths[i].stroke(path_colors[i], PATH_STROKE);
           bezier_curves[i] = bezier_curves[i + 1];
         } else {
           all_points[i] = [];
-          paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+          paths[i] = new Path().stroke(path_colors[i], PATH_STROKE).addTo(stage);
           bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
       }

@@ -3,11 +3,18 @@
     <title> Cúbicas de Bézier controladas por cúbicas de Bézier </title>
     <script src="./assets/bonsai.min.js"></script>
     <link rel="stylesheet" href="./assets/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="./assets/ghost.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
   </head>
   <body>
+    <div class="container-fluid">
+      <div class="title" style="padding: 0px; ">
+        <h3> Transformação interativa de Cúbicas de Bézier controladas por Cúbicas de Bézier </h3>
+      </div>
+    </div>
     <div class="container-fluid">
       <div class="params" id="param">
         <div class="item">
@@ -18,8 +25,8 @@
           <input class="text" id="t_eval" type="number" oninput="sendEval()">
 
           <label style="color: black">Parâmetro das curvas:</label>
-          <input oninput="change_t()" type="range" id="t" min="1" max="100">
-          <label id="show_t"></label>
+          <input oninput="change_t()" type="range" id="t" value="30" min="1" max="500">
+          <label style="font-family: serif" id="show_t"></label>
 
           <script>
             document.getElementById("show_t").innerHTML = 'Disabled';
@@ -31,19 +38,22 @@
           </script>
 
         </div>
-        <label class="checkbox-inline">
-          <input onchange="checkbox('points')" class="check" type="checkbox" id="points" checked> Pontos
-        </label>
-        <label class="checkbox-inline">
-          <input onchange="checkbox('segments')" class="check" type="checkbox" id="segments" checked>Segmentos
-        </label>
-        <label class="checkbox-inline">
-          <input onchange="checkbox('curves')" class="check" type="checkbox" id="curves" checked>Curvas
-        </label>
-        <label class="checkbox-inline">
-          <input onchange="checkbox('t_curves')" class="check" type="checkbox" id="t_curves" checked disabled>T-Curvas
-        </label>
-        <button onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Desenhar curvas</button>
+        <div class="view">
+          <p style="color: black; font-family: coco-gothic"><i class="fa fa-eye"></i> Visualizar/Esconder <i class="fa fa-eye-slash"></i> </p>
+          <label class="checkbox-inline">
+            <input onchange="checkbox('points')" class="check" type="checkbox" id="points" checked> Pontos
+          </label>
+          <label class="checkbox-inline">
+            <input onchange="checkbox('segments')" class="check" type="checkbox" id="segments" checked>Segmentos
+          </label>
+          <label class="checkbox-inline">
+            <input onchange="checkbox('curves')" class="check" type="checkbox" id="curves" checked>Curvas
+          </label>
+          <label class="checkbox-inline">
+            <input onchange="checkbox('t_curves')" class="check" type="checkbox" id="t_curves" checked disabled>T-Curvas
+          </label>
+        </div>
+        <button style="margin-bottom: 20px;margin-left: 20px" onclick="drawCurves()" id="btn-draw" style="margin: 10px" class="btn btn-primary" disabled>Desenhar curvas</button>
       </div>
     </div>
 
@@ -96,6 +106,18 @@
           document.getElementById('t_curves').disabled = true;
         });
       </script>
+    </div>
+
+    <div class="container-fluid">
+      <div class="title" style="padding: 1px; width: 80vw;">
+        <h5> Douglas Soares Lins -
+          <a href="https://www.cin.ufpe.br/~dsl">dsl</a> |
+          Luiz Henrique Tavares Caúla -
+          <a href="https://www.cin.ufpe.br/~lhtc">lhtc</a> •
+        <a href="https://www.ufpe.br"> Universidade Federal de Pernambuco </a>•
+        <a href="https://www.cin.ufpe.br"> Ciência da Computação </a> •
+        Programação Gráfica </h5>
+      </div>
     </div>
   </body>
 
