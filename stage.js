@@ -69,7 +69,6 @@ function getColors() {
       if(red > 143) red = 143;
     }
   }
-  console.log(colors[sb]);
 }
 
 function removeCurves() {
@@ -218,11 +217,14 @@ stage.on('message:hide', function(data){
         else el.stroke(col[i], stroke).addTo(stage);
       });
     }
-    else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
-    arr.forEach(function(el){
+    else if(data.id == 'curves') {
+      arr = bezier_curves; col = BEZIER_COLOR; 
+      stroke = BEZIER_STROKE;
+      arr.forEach(function(el){
       if(!data.checked) el.stroke(transp, stroke).addTo(stage);
       else el.stroke(col, stroke).addTo(stage);
-    });
+      });
+    }
   } else {
     arr = c_bezier_curves; stroke = T_BEZIER_STROKE;
     arr.forEach(function(el,i){
