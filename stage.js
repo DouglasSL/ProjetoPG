@@ -38,6 +38,7 @@ function getColors() {
   var red = 255, green = 0, blue = 0;
   var block_green = false;
   var block_red = false;
+  var block_blue = false;
   var calc = 256/sb;
   for(i = 0; i <= sb; i++){
     col = new color.RGBAColor(red, green, blue, 0.5);
@@ -48,23 +49,24 @@ function getColors() {
     } else if (red > 0 && !block_red) {
       red -= calc * 4;
       if(red < 0) red = 0;
-    } else if(green > 0 && blue < 255) {
+    } else if(green > 0 && blue < 255 && !block_blue) {
       block_green = true;
-      green -= calc * 4;
-      blue += calc * 4;
+      green -= calc * 3.8;
+      blue += calc * 3.8;
       if(green < 0) green = 0;
       if(blue > 255) blue = 255;
-    } else if(red < 75 && blue > 130) {
+    } else if(red < 75 && blue > 130 && !block_blue) {
       block_red = true;
       red += calc * 4;
       blue -= calc * 4;
       if(blue < 130) blue = 130;
       if(red > 255) red = 255;
     } else if(red < 143 && blue < 255){
-      red += calc * 4.5;
-      blue += calc * 4.5;
-      if(blue > 0) blue = 255;
-      if(red > 255) red = 255;
+      block_blue = true;
+      red += calc * 4;
+      blue += calc * 4;
+      if(blue > 255) blue = 255;
+      if(red > 143) red = 143;
     }
   }
   console.log(colors[sb]);
@@ -173,6 +175,9 @@ stage.sendMessage('here', {eval: evaluations, t_evaluations: t_evaluations});
 /* Gets the evaluatios value from the front */
 stage.on('message:getEval', function(data){
   evaluations = parseInt(data.eval);
+  bezier_curves.forEach(function(bc,i){
+      drawBezierCurve(i);
+  });
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
   var arr = c_bezier_curves;
@@ -206,7 +211,13 @@ stage.on('message:hide', function(data){
       });
     });
   } else if(data.id != "t_curves"){
-    if (data.id == 'segments') {arr = paths; col = path_colors[0]; stroke = PATH_STROKE;}
+    if (data.id == 'segments') {
+      arr = paths; col = path_colors; stroke = PATH_STROKE;
+      arr.forEach(function(el,i){
+        if(!data.checked) el.stroke(transp, stroke).addTo(stage);
+        else el.stroke(col[i], stroke).addTo(stage);
+      });
+    }
     else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
     arr.forEach(function(el){
       if(!data.checked) el.stroke(transp, stroke).addTo(stage);
