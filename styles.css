@@ -20,6 +20,7 @@ body {
 
 label {
   color: black;
+  font-family: coco-gothic;
 }
 
 .title {
@@ -40,7 +41,19 @@ label {
   width: 80vw;
   margin-bottom: 15px;
   margin-top: 4px;
-  padding: 10px;
+  padding: 4px;
+}
+
+.view {
+  display: inline-block;
+  border: 2px solid #f8fce8;
+  border-radius: 20px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+p {
+  border-bottom: thin solid #f8fce8;
 }
 
 .text {
@@ -69,7 +82,7 @@ label {
   margin-right: 5px;
   margin-left: 5px;
   border-radius: 10px;
-  border: thin solid white;
+  border: thin solid #f8fce8;
   padding: 10px;
 }
 
