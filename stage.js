@@ -3,10 +3,10 @@
 */
 const POINT_COLOR = 'black';
 const POINT_RADIUS = 5;
-const PATH_COLOR = 'blue';
+var path_colors = ['blue', 'turquoise', 'green', 'brown'];
 const PATH_STROKE = 1;
-const BEZIER_COLOR = 'red';
-const BEZIER_STROKE = 5;
+var BEZIER_COLOR = 'red';
+const BEZIER_STROKE = 4;
 const T_BEZIER_COLOR = 'pink';
 const T_BEZIER_STROKE = 2;
 
@@ -25,7 +25,7 @@ var all_points = [[], [], [], []];
 var colors = [];
 var draw_t = false;
 for(i = 0; i < 4; i++){
-  paths.push(new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage));
+  paths.push(new Path().stroke(path_colors[i], PATH_STROKE).addTo(stage));
   bezier_curves.push(new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage));
 }
 
@@ -198,7 +198,7 @@ stage.on('message:hide', function(data){
       });
     });
   } else if(data.id != "t_curves"){
-    if (data.id == 'segments') {arr = paths; col = PATH_COLOR; stroke = PATH_STROKE;}
+    if (data.id == 'segments') {arr = paths; col = path_colors[0]; stroke = PATH_STROKE;}
     else if(data.id == 'curves') {arr = bezier_curves; col = BEZIER_COLOR; stroke = BEZIER_STROKE;}
     arr.forEach(function(el){
       if(!data.checked) el.stroke(transp, stroke).addTo(stage);
@@ -280,10 +280,11 @@ stage.on('click', function(clickEvent) {
         if(i < 3) {
           all_points[i] = all_points[i + 1];
           paths[i] = paths[i+1];
+          paths[i].stroke(path_colors[i], PATH_STROKE);
           bezier_curves[i] = bezier_curves[i + 1];
         } else {
           all_points[i] = [];
-          paths[i] = new Path().stroke(PATH_COLOR, PATH_STROKE).addTo(stage);
+          paths[i] = new Path().stroke(path_colors[i], PATH_STROKE).addTo(stage);
           bezier_curves[i] = new Path().stroke(BEZIER_COLOR, BEZIER_STROKE).addTo(stage);
         }
       }
