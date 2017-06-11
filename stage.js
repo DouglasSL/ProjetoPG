@@ -36,7 +36,7 @@ for(i = 0; i < 4; i++){
 function getColors() {
   var red = 255, green = 0, blue = 255;
   for(i = 0; i <= sb; i++){
-    col = new color.RGBAColor(red, green, blue, 1);
+    col = new color.RGBAColor(red, green, blue, 0.5);
     colors.push(col);
     red -= 256/sb;
     green += 256/sb;
