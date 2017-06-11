@@ -34,13 +34,31 @@ for(i = 0; i < 4; i++){
 */
 
 function getColors() {
-  var red = 255, green = 0, blue = 255;
+  colors = [];
+  var red = 255, green = 0, blue = 0;
+  var calc;
+  var block_green = false;
+  var block_red = false;
   for(i = 0; i <= sb; i++){
     col = new color.RGBAColor(red, green, blue, 0.5);
     colors.push(col);
-    red -= 256/sb;
-    green += 256/sb;
-    blue -= 256/sb;
+    if(green < 255 && !block_green){
+      green += 256/sb * 3;
+      if(green > 255) green = 255;
+    } else if (red > 0 && !block_red) {
+      red -= 256/sb * 3;
+      if(red < 0) red = 0;
+    } else if(green > 0 && blue < 255) {
+      block_green = true;
+      green -= 256/sb * 3;
+      blue += 256/sb * 3;
+      if(green < 0) green = 0;
+      if(blue > 255) blue = 255;
+    } else if(red < 143 && blue > 255) {
+      block_red = true;
+      red += 256/sb * 3;
+      blue -= 256/sb * 3;
+    }
   }
 }
 
@@ -150,8 +168,8 @@ stage.on('message:getEval', function(data){
   t_evaluations = parseInt(data.t_eval);
   sb = parseInt(data.t);
   var arr = c_bezier_curves;
-  removeCurves();
   getColors();
+  removeCurves();
   if(countPoints == 16 && draw_t) draw_by_points();
 });
 
@@ -159,7 +177,6 @@ stage.on('message:getEval', function(data){
 stage.on('message:draw', function(data) {
   draw_t = true;
   sb = parseInt(data.t);
-  var arr = c_bezier_curves;
   removeCurves();
   getColors();
   draw_by_points();
