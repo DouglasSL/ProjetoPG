@@ -10,6 +10,11 @@
   </head>
   <body>
     <div class="container-fluid">
+      <div class="title" style="padding: 0px; ">
+        <h3> Cúbicas de Bézier controladas por cúbicas de Bézier </h3>
+      </div>
+    </div>
+    <div class="container-fluid">
       <div class="params" id="param">
         <div class="item">
           <label style="color: black">No. Avaliações - Carreiras:</label>
@@ -19,7 +24,7 @@
           <input class="text" id="t_eval" type="number" oninput="sendEval()">
 
           <label style="color: black">Parâmetro das curvas:</label>
-          <input oninput="change_t()" type="range" id="t" min="1" max="500">
+          <input oninput="change_t()" type="range" id="t" value="30" min="1" max="500">
           <label id="show_t"></label>
 
           <script>
@@ -97,6 +102,18 @@
           document.getElementById('t_curves').disabled = true;
         });
       </script>
+    </div>
+
+    <div class="container-fluid">
+      <div class="title" style="padding: 1px; width: 80vw;">
+        <h5> Douglas Soares Lins -
+          <a href="https://www.cin.ufpe.br/~dsl">dsl</a> |
+          Luiz Henrique Tavares Caúla -
+          <a href="https://www.cin.ufpe.br/~lhtc">lhtc</a> •
+        <a href="https://www.ufpe.br"> Universidade Federal de Pernambuco </a>•
+        <a href="https://www.cin.ufpe.br"> Ciência da Computação </a> •
+        Programação Gráfica </h5>
+      </div>
     </div>
   </body>
 
